@@ -24,7 +24,7 @@ $nome = $_SESSION['nome'];
 
     <style>
         body {
-            background-color:
+            background-color:white
         }
 
         .header {
@@ -105,8 +105,12 @@ $nome = $_SESSION['nome'];
                             echo "<td>" . htmlspecialchars($item['nome']) . "</td>";
                             echo "<td>" . htmlspecialchars($item['cpf']) . "</td>";
                             echo "<td>" . htmlspecialchars($item['celular']) . "</td>";
-                            echo "<td><a href='#' data-bs-toggle='modal' data-bs-target='#modalEditar' data-id='$id'>EDITAR</a> | <a href='excluir.php?id=$id'>EXCLUIR</a></td>";
-                            echo "</tr>";
+                            echo "<td><a href='#' data-bs-toggle='modal' data-bs-target='#modalEditar' data-id='$id'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='currentColor' class='bi bi-pencil-square' viewBox='0 0 16 16'>
+  <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
+  <path fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z'/>
+</svg></a> | <a href='excluir.php?id=$id'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='currentColor' class='bi bi-trash3' viewBox='0 0 16 16'>
+  <path d='M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5'/>
+</svg></a></td>echo </tr>";
                         }
 
                         echo "</tbody>";
@@ -152,11 +156,11 @@ $nome = $_SESSION['nome'];
                 <label class="form-label">CELULAR</label>
                 <input type="number" name="celular" class="form-control" required/>
                 <br/> 
-                <button type="submit" class="btn btn-sucess">CADASTRAR </button>    
+                <button type="submit" class="btn btn-outline-success">CADASTRAR </button>    
                 </form>
             </div>
             <div class="modal-footer">  
-                <button type="button" class="btn btn-sucess" data-bs-dismiss="modal">FECHAR</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">FECHAR</button>
                 
             </div>
 
@@ -176,26 +180,47 @@ $nome = $_SESSION['nome'];
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
            <div class="modal-body">
-        <form action="cadastro_pessoa.php" method="POST">
+        <form action="editar_pessoa.php" method="POST">
+            <input type="hidden" id="edit_id" name="id" value="">
                 <label class="form-label">NOME</label>
-                <input type="text" name="nome" class="form-control" required/>
+                <input type="text" name="nome" class="form-control" id="edit_nome" required/>
                 <br/> 
                 <label class="form-label">CPF</label>
-                <input type="number" name="cpf" class="form-control" required/>
+                <input type="number" name="cpf" class="form-control" id="edit_cpf" required/>
                 <br/> 
                 <label class="form-label">CELULAR</label>
-                <input type="number" name="celular" class="form-control" required/>
+                <input type="number" name="celular" class="form-control" id="edit_celular" required/>
                 <br/> 
-                <button type="submit" class="btn btn-sucess">ATUALIZAR </button>    
+                <button type="submit" class="btn btn-outline-success">ATUALIZAR </button>    
                 </form>
            </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
+<script>
+    document.getElementById('modalEditar').addEventListener('show.bs.modal', function (event) {
+        let button = event.relatedTarget;
+        let id = button.getAttribute('data-id');
+        // Aqui você pode usar o ID para buscar os dados da pessoa e preencher o formulário de edição
+        fetch('buscar_pessoa.php?id=' + id)
+            .then(response => response.json())
+            .then(data => {
+                // Preencha os campos do formulário com os dados retornados
+                document.getElementById('edit_id').value = data.id; // Supondo que você tenha um campo oculto para o ID
+                document.getElementById('edit_nome').value = data.nome;
+                document.getElementById('edit_cpf').value = data.cpf;
+                document.getElementById('edit_celular').value = data.celular;
+                
+                // document.querySelector('#modalEditar input[name="nome"]').value = data.nome;
+                // document.querySelector('#modalEditar input[name="cpf"]').value = data.cpf;
+                // document.querySelector('#modalEditar input[name="celular"]').value = data.celular;
+            });
+    });
+</script>
 
 </body>
 </html>
