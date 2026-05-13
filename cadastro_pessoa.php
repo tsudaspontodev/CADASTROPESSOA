@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'conecta.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = $_POST['nome'];
@@ -24,11 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmtInsert->bindParam(':cpf', $cpf);
             $stmtInsert->bindParam(':celular', $celular);
             if ($stmtInsert->execute()) {
+               if ($tipo == "admin") {
                 echo "<script>
-                        alert('Pessoa cadastrada com sucesso!');
-                        window.location.href ='aula_admin.php';
-                      </script>";
-                exit();
+                           alert('Pessoa cadastrada com sucesso!');
+                           window.location.href ='aula_admin.php';
+                         </script>";
+               } else {
+
+                   echo "<script>
+                           alert('Pessoa cadastrada com sucesso!');
+                           window.location.href ='aula_normal.php';
+                         </script>";
+                   exit();
+               }
             } else {
                 echo "<script>
                         alert('Erro ao cadastrar pessoa!');
